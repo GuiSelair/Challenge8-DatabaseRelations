@@ -54,7 +54,17 @@ class ProductsRepository implements IProductsRepository {
   public async updateQuantity(
     products: IUpdateProductsQuantityDTO[],
   ): Promise<Product[]> {
-    // TODO
+    // const productsUpdated = products.map(findProduct => {
+    //   const [productToUpdate] = await this.ormRepository.find({
+    //     id: findProduct.id,
+    //   });
+    //   if (productToUpdate) {
+    //     productToUpdate.quantity = findProduct.quantity;
+    //     await this.ormRepository.save(productToUpdate);
+    //   }
+    //   return productToUpdate;
+    // });
+    // return productsUpdated;
   }
 }
 
