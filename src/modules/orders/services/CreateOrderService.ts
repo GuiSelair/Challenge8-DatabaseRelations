@@ -38,13 +38,24 @@ class CreateOrderService {
       findProducts,
     );
 
-    const productsFoundWithProductID = productsFound.map(product => {
-      return Object.assign(product, { product_id: product.id });
+    const productsFromOrder = productsFound.map(productFound => {
+      const productQuantityInOrder = products.filter(
+        product => product.id === productFound.id,
+      )[0].quantity;
+
+      const productFromOrder = {
+        product_id: productFound.id,
+        name: productFound.name,
+        price: productFound.price,
+        quantity: productQuantityInOrder,
+      };
+
+      return productFromOrder;
     });
 
     const order = await this.ordersRepository.create({
       customer,
-      products: productsFoundWithProductID,
+      products: productsFromOrder,
     });
 
     return order;

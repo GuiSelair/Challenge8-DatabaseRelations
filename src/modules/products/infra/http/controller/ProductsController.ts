@@ -12,6 +12,6 @@ export default class ProductsController {
       price,
       quantity,
     });
-    return response.status(200).json(product);
+    return response.status(201).json(product);
   }
 }
