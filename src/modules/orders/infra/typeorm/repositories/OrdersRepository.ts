@@ -17,7 +17,7 @@ class OrdersRepository implements IOrdersRepository {
 
   public async create({ customer, products }: ICreateOrderDTO): Promise<Order> {
     const newOrder = this.ormRepositoryOrders.create({
-      customer,
+      customer_id: customer.id,
     });
     await this.ormRepositoryOrders.save(newOrder);
 

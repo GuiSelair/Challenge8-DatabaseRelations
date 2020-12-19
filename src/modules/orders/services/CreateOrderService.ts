@@ -33,7 +33,10 @@ class CreateOrderService {
 
     if (!customer) throw new AppError('User not found');
 
-    const findProducts = products.filter(product => product.id);
+    const findProducts = products.map(product => {
+      return { id: product.id };
+    });
+
     const productsFound = await this.productsRepository.findAllById(
       findProducts,
     );

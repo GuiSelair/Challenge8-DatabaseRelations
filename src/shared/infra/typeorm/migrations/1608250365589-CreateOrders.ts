@@ -32,7 +32,7 @@ export default class CreateOrders1608250365589 implements MigrationInterface {
           {
             name: 'orderCustomer',
             columnNames: ['customer_id'],
-            referencedTableName: 'customer',
+            referencedTableName: 'customers',
             referencedColumnNames: ['id'],
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
@@ -43,7 +43,7 @@ export default class CreateOrders1608250365589 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('customer', 'orderCustomer');
+    await queryRunner.dropForeignKey('customers', 'orderCustomer');
     await queryRunner.dropTable('orders');
   }
 }
