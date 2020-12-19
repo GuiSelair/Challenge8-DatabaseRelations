@@ -3,40 +3,28 @@ import { getRepository, Repository } from 'typeorm';
 import IOrdersRepository from '@modules/orders/repositories/IOrdersRepository';
 import ICreateOrderDTO from '@modules/orders/dtos/ICreateOrderDTO';
 import Order from '../entities/Order';
-import OrdersProducts from '../entities/OrdersProducts';
 
 class OrdersRepository implements IOrdersRepository {
-  private ormRepositoryOrders: Repository<Order>;
-
-  private ormRepositoryOrdersProducts: Repository<OrdersProducts>;
+  private ormRepository: Repository<Order>;
 
   constructor() {
-    this.ormRepositoryOrders = getRepository(Order);
-    this.ormRepositoryOrdersProducts = getRepository(OrdersProducts);
+    this.ormRepository = getRepository(Order);
   }
 
   public async create({ customer, products }: ICreateOrderDTO): Promise<Order> {
-    const newOrder = this.ormRepositoryOrders.create({
-      customer_id: customer.id,
+    const newOrder = this.ormRepository.create({
+      customer,
+      order_products: products,
     });
-    await this.ormRepositoryOrders.save(newOrder);
-
-    const newOrderProducts = products.map(product => {
-      return this.ormRepositoryOrdersProducts.create({
-        order_id: newOrder.id,
-        product_id: product.product_id,
-        price: product.price,
-        quantity: product.quantity,
-      });
-    });
-
-    await this.ormRepositoryOrdersProducts.save(newOrderProducts);
+    await this.ormRepository.save(newOrder);
 
     return newOrder;
   }
 
   public async findById(id: string): Promise<Order | undefined> {
-    const order = await this.ormRepositoryOrders.findOne(id);
+    const order = await this.ormRepository.findOne(id, {
+      relations: ['order_products', 'customer'],
+    });
     return order;
   }
 }

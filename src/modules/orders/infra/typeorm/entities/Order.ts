@@ -18,18 +18,17 @@ class Order {
   @PrimaryGeneratedColumn()
   id: string;
 
+  @ManyToOne(() => Customer)
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
+
   @Column()
   customer_id: string;
 
-  @ManyToOne(() => Customer)
-  @JoinColumn({ name: 'id' })
-  customers: Customer;
-
-  @OneToMany(() => OrdersProducts, ordersProducts => ordersProducts.id, {
+  @OneToMany(() => OrdersProducts, ordersProducts => ordersProducts.order, {
     cascade: true,
-    // eager: true,
   })
-  @JoinTable()
+  // @JoinTable()
   order_products: OrdersProducts[];
 
   @CreateDateColumn()
